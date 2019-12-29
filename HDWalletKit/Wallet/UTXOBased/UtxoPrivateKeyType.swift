@@ -54,6 +54,15 @@ public enum UtxoPrivateKeyType {
                 return "^7[rs][1-9A-HJ-NP-Za-km-z]{49}"
             }
         }
+        case .bithereum:
+            switch self {
+            case .hex:
+                return "^\\p{XDigit}+$"
+            case .wifCompressed:
+                return "[KL][1-9A-HJ-NP-Za-km-z]{51}"
+            case .wifUncompressed:
+                return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
+        }     
     }
     
     static func pkType(for pk: String, coin: Coin) -> UtxoPrivateKeyType? {
