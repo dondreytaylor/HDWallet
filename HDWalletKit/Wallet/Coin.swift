@@ -107,7 +107,7 @@ public enum Coin {
         case .bitcoinCash:
             return 145
         case .bithereum:
-            return 555
+            return 469
         }
     }
     
