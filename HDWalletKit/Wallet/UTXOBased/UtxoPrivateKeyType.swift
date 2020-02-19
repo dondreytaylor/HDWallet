@@ -12,7 +12,7 @@ public enum UtxoPrivateKeyType {
     case wifUncompressed
     case wifCompressed
     case hex
-    
+
     private func regexForCoin(coin: Coin) -> String {
         switch coin {
         case .bitcoin:
@@ -63,8 +63,18 @@ public enum UtxoPrivateKeyType {
                 return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
             }
         }
+      case .bitcointestnet:
+          switch self {
+          case .hex:
+              return "^\\p{XDigit}+$"
+          case .wifCompressed:
+              return "[c][1-9A-HJ-NP-Za-km-z]{51}"
+          case .wifUncompressed:
+              return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
+          }
+      }
     }
-    
+
     static func pkType(for pk: String, coin: Coin) -> UtxoPrivateKeyType? {
         let range = NSRange(location: 0, length: pk.utf16.count)
         return [UtxoPrivateKeyType.wifUncompressed, .wifCompressed, .hex].first(where: {

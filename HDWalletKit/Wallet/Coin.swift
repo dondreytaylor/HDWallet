@@ -10,12 +10,13 @@ import Foundation
 
 public enum Coin {
     case bitcoin
+    case bitcointestnet
     case ethereum
     case litecoin
     case bitcoinCash
     case dash
     case bithereum
-    
+
     //https://github.com/satoshilabs/slips/blob/master/slip-0132.md
     public var privateKeyVersion: UInt32 {
         switch self {
@@ -25,6 +26,8 @@ public enum Coin {
         case .bitcoinCash: fallthrough
         case .bitcoin:
             return 0x0488ADE4
+        case .bitcointestnet:
+            return 0x04358394
         case .dash:
             return 0x02FE52CC
         default:
@@ -39,6 +42,8 @@ public enum Coin {
         case .bitcoinCash: fallthrough
         case .bitcoin:
             return 0x00
+        case .bitcointestnet:
+            return 0x6F
         case .dash:
             return 0x4C
         case .bithereum:
@@ -47,7 +52,7 @@ public enum Coin {
             fatalError("Not implemented")
         }
     }
-    
+
     // P2SH
     public var scriptHash: UInt8 {
         switch self {
@@ -57,13 +62,15 @@ public enum Coin {
             return 0x05
         case .bithereum:
             return 0x28
+        case .bitcointestnet:
+            return 0xC4
         case .dash:
             return 0x10
         default:
             fatalError("Not implemented")
         }
     }
-    
+
     //https://www.reddit.com/r/litecoin/comments/6vc8tc/how_do_i_convert_a_raw_private_key_to_wif_for/
     public var wifAddressPrefix: UInt8 {
         switch self {
@@ -71,6 +78,8 @@ public enum Coin {
         case .bitcoinCash: fallthrough
         case .bitcoin:
             return 0x80
+        case .bitcointestnet:
+            return 0xEF
         case .litecoin:
             return 0xB0
         case .dash:
@@ -79,7 +88,7 @@ public enum Coin {
             fatalError("Not implemented")
         }
     }
-    
+
     public var addressPrefix:String {
         switch self {
         case .ethereum:
@@ -88,12 +97,12 @@ public enum Coin {
             return ""
         }
     }
-    
+
     public var uncompressedPkSuffix: UInt8 {
         return 0x01
     }
-    
-    
+
+
     public var coinType: UInt32 {
         switch self {
         case .bitcoin:
@@ -108,9 +117,11 @@ public enum Coin {
             return 145
         case .bithereum:
             return 469
+        case .bitcointestnet:
+            return 1
         }
     }
-    
+
     public var scheme: String {
         switch self {
         case .bitcoin:
@@ -119,6 +130,8 @@ public enum Coin {
             return "litecoin"
         case .bitcoinCash:
             return "bitcoincash"
+        case .bitcointestnet:
+            return "bitcointestnet"
         case .dash:
             return "dash"
         case .bithereum:

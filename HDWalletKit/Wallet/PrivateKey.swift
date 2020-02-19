@@ -19,7 +19,7 @@ public struct PrivateKey {
     public let index: UInt32
     public let coin: Coin
     private var keyType: PrivateKeyType
-    
+
     public init(seed: Data, coin: Coin) {
         let output = Crypto.HMACSHA512(key: "Bitcoin seed".data(using: .ascii)!, data: seed)
         self.raw = output[0..<32]
@@ -28,7 +28,7 @@ public struct PrivateKey {
         self.coin = coin
         self.keyType = .hd
     }
-    
+
     public init?(pk: String, coin: Coin) {
         switch coin {
         case .ethereum:
@@ -59,7 +59,7 @@ public struct PrivateKey {
         self.coin = coin
         self.keyType = .nonHd
     }
-    
+
     private init(privateKey: Data, chainCode: Data, index: UInt32, coin: Coin) {
         self.raw = privateKey
         self.chainCode = chainCode
@@ -67,11 +67,11 @@ public struct PrivateKey {
         self.coin = coin
         self.keyType = .hd
     }
-    
+
     public var publicKey: PublicKey {
         return PublicKey(privateKey: raw, coin: coin)
     }
-    
+
     public func wifCompressed() -> String {
         var data = Data()
         data += coin.wifAddressPrefix
@@ -80,7 +80,7 @@ public struct PrivateKey {
         data += data.doubleSHA256.prefix(4)
         return Base58.encode(data)
     }
-    
+
     public func wifUncompressed() -> String {
         var data = Data()
         data += coin.wifAddressPrefix
@@ -88,25 +88,26 @@ public struct PrivateKey {
         data += data.doubleSHA256.prefix(4)
         return Base58.encode(data)
     }
-    
+
     public func get() -> String {
         switch self.coin {
         case .bitcoin: fallthrough
         case .litecoin: fallthrough
         case .dash: fallthrough
         case .bithereum: fallthrough
+        case .bitcointestnet: fallthrough
         case .bitcoinCash:
             return self.wifCompressed()
         case .ethereum:
             return self.raw.toHexString()
         }
     }
-    
+
     public func derived(at node:DerivationNode) -> PrivateKey {
         guard keyType == .hd else { fatalError() }
         let edge: UInt32 = 0x80000000
         guard (edge & node.index) == 0 else { fatalError("Invalid child index") }
-        
+
         var data = Data()
         switch node {
         case .hardened:
@@ -115,13 +116,13 @@ public struct PrivateKey {
         case .notHardened:
             data += Crypto.generatePublicKey(data: raw, compressed: true)
         }
-        
+
         let derivingIndex = CFSwapInt32BigToHost(node.hardens ? (edge | node.index) : node.index)
         data += derivingIndex
-        
+
         let digest = Crypto.HMACSHA512(key: chainCode, data: data)
         let factor = BInt(data: digest[0..<32])
-        
+
         let curveOrder = BInt(hex: "FFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFEBAAEDCE6AF48A03BBFD25E8CD0364141")!
         let derivedPrivateKey = ((BInt(data: raw) + factor) % curveOrder).data
         let derivedChainCode = digest[32..<64]
@@ -132,9 +133,8 @@ public struct PrivateKey {
             coin: coin
         )
     }
-    
+
     public func sign(hash: Data) throws -> Data {
         return try Crypto.sign(hash, privateKey: raw)
     }
 }
-
