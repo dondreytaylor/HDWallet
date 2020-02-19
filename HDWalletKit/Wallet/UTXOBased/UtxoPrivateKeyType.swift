@@ -15,62 +15,63 @@ public enum UtxoPrivateKeyType {
 
     private func regexForCoin(coin: Coin) -> String {
         switch coin {
-        case .bitcoin:
-            switch self {
-            case .hex:
+            case .bitcoin:
+                switch self {
+                case .hex:
+                    return "^\\p{XDigit}+$"
+                case .wifCompressed:
+                    return "[KL][1-9A-HJ-NP-Za-km-z]{51}"
+                case .wifUncompressed:
+                    return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
+                }
+            case .litecoin:
+                switch self {
+                case .hex:
+                    return "^\\p{XDigit}+$"
+                case .wifCompressed:
+                    return "[T][1-9A-HJ-NP-Za-km-z]{51}"
+                case .wifUncompressed:
+                    return "^6[uv][1-9A-HJ-NP-Za-km-z]{49}"
+                }
+            case .ethereum:
                 return "^\\p{XDigit}+$"
-            case .wifCompressed:
-                return "[KL][1-9A-HJ-NP-Za-km-z]{51}"
-            case .wifUncompressed:
-                return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
-            }
-        case .litecoin:
-            switch self {
-            case .hex:
-                return "^\\p{XDigit}+$"
-            case .wifCompressed:
-                return "[T][1-9A-HJ-NP-Za-km-z]{51}"
-            case .wifUncompressed:
-                return "^6[uv][1-9A-HJ-NP-Za-km-z]{49}"
-            }
-        case .ethereum:
-            return "^\\p{XDigit}+$"
-        case .bitcoinCash:
-            switch self {
-            case .hex:
-                return "^\\p{XDigit}+$"
-            case .wifCompressed:
-                return "[KL][1-9A-HJ-NP-Za-km-z]{51}"
-            case .wifUncompressed:
-                return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
-            }
-        case .dash:
-            switch self {
-            case .hex:
-                return "^\\p{XDigit}+$"
-            case .wifCompressed:
-                return "[X][1-9A-HJ-NP-Za-km-z]{51}"
-            case .wifUncompressed:
-                return "^7[rs][1-9A-HJ-NP-Za-km-z]{49}"
-            }
-        case .bithereum:
-            switch self {
-            case .hex:
-                return "^\\p{XDigit}+$"
-            case .wifCompressed:
-                return "[KL][1-9A-HJ-NP-Za-km-z]{51}"
-            case .wifUncompressed:
-                return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
-            }
-        case .bitcointestnet:
-          switch self {
-          case .hex:
-              return "^\\p{XDigit}+$"
-          case .wifCompressed:
-              return "[c][1-9A-HJ-NP-Za-km-z]{51}"
-          case .wifUncompressed:
-              return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
-          }
+            case .bitcoinCash:
+                switch self {
+                case .hex:
+                    return "^\\p{XDigit}+$"
+                case .wifCompressed:
+                    return "[KL][1-9A-HJ-NP-Za-km-z]{51}"
+                case .wifUncompressed:
+                    return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
+                }
+            case .dash:
+                switch self {
+                case .hex:
+                    return "^\\p{XDigit}+$"
+                case .wifCompressed:
+                    return "[X][1-9A-HJ-NP-Za-km-z]{51}"
+                case .wifUncompressed:
+                    return "^7[rs][1-9A-HJ-NP-Za-km-z]{49}"
+                }
+            case .bithereum:
+                switch self {
+                case .hex:
+                    return "^\\p{XDigit}+$"
+                case .wifCompressed:
+                    return "[KL][1-9A-HJ-NP-Za-km-z]{51}"
+                case .wifUncompressed:
+                    return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
+                }
+            case .bitcointestnet:
+              switch self {
+              case .hex:
+                  return "^\\p{XDigit}+$"
+              case .wifCompressed:
+                  return "[c][1-9A-HJ-NP-Za-km-z]{51}"
+              case .wifUncompressed:
+                  return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
+              }
+        }
 
     }
 
