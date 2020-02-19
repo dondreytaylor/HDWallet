@@ -62,8 +62,7 @@ public enum UtxoPrivateKeyType {
             case .wifUncompressed:
                 return "^5[HJK][0-9A-Za-z&&[^0OIl]]{49}"
             }
-        }
-       case .bitcointestnet:
+        case .bitcointestnet:
           switch self {
           case .hex:
               return "^\\p{XDigit}+$"
